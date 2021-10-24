@@ -174,7 +174,7 @@ const orbit =
 		time: glkit_time,
 	});
 
-const orbit_zoom = new glkit.Vec1().set(1);
+const orbit_zoom = new glkit.Vec1().set(10);
 
 orbit.camera
 	.setPerspectiveProjection
