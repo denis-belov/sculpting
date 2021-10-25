@@ -261,12 +261,15 @@ const program =
 			uniform mat4 u_raycast_view_matrix;
 			varying vec4 v_raycast_output;
 
+			#define GET_TEXEL_COORDS(coords, index, size)\
+				vec2 coords;\
+				coords.y = (index) / (size);\
+				coords.x = fract(coords.y);\
+				coords.y = floor(coords.y - coords.x) / (size);
+
 			void main ()
 			{
-				vec2 _texel_coord;
-				_texel_coord.y = in_index / 2048.0;
-				_texel_coord.x = ((fract(_texel_coord.y)));
-				_texel_coord.y = (((floor(_texel_coord.y) / 2048.0)));
+				GET_TEXEL_COORDS(_texel_coord, in_index, 2048.0);
 
 				vec3 in_position_tex = texture2D(u_vertices, _texel_coord).rgb;
 
@@ -293,34 +296,21 @@ const program =
 								break;
 							}
 
-							vec2 TC;
-							TC.y = (in_offset + float(ii)) / 2048.0;
-							TC.x = fract(TC.y);
-							TC.y = floor(TC.y) / 2048.0;
+							GET_TEXEL_COORDS(TC, in_offset + float(ii), 2048.0);
 
-							vec3 ai = texture2D(u_triangles, TC).rgb;
+							vec2 ai = texture2D(u_triangles, TC).rg;
 
-							vec2 _TC;
-							_TC.y = ai.r / 2048.0;
-							_TC.x = ((fract(_TC.y)));
-							_TC.y = (((floor(_TC.y) / 2048.0)));
+							vec3 a = in_position_tex;
 
-							vec3 a = texture2D(u_vertices, _TC).rgb;
+							GET_TEXEL_COORDS(_TC1, ai.r, 2048.0);
 
-							_TC.y = ai.g / 2048.0;
-							_TC.x = ((fract(_TC.y)));
-							_TC.y = (((floor(_TC.y) / 2048.0)));
+							vec3 b = texture2D(u_vertices, _TC1).rgb;
 
-							vec3 b = texture2D(u_vertices, _TC).rgb;
+							GET_TEXEL_COORDS(_TC2, ai.g, 2048.0);
 
-							_TC.y = ai.b / 2048.0;
-							_TC.x = ((fract(_TC.y)));
-							_TC.y = (((floor(_TC.y) / 2048.0)));
-
-							vec3 c = texture2D(u_vertices, _TC).rgb;
+							vec3 c = texture2D(u_vertices, _TC2).rgb;
 
 							v_normal += cross(a - b, a - c);
-							// v_normal += cross(a - b, c - b);
 						}
 
 						v_normal = normalize(v_normal);
@@ -429,14 +419,22 @@ for (let i = 0; i < vertex_count; ++i)
 	(
 		(elm) =>
 		{
-			// a, b, c
-			triangle_data.push
-			(
-				new_indices[(elm * 3) + 0],
-				new_indices[(elm * 3) + 1],
-				new_indices[(elm * 3) + 2],
-				0,
-			);
+			const a = new_indices[(elm * 3) + 0];
+			const b = new_indices[(elm * 3) + 1];
+			const c = new_indices[(elm * 3) + 2];
+
+			if (i === a)
+			{
+				triangle_data.push(b, c, 0, 0);
+			}
+			else if (i === b)
+			{
+				triangle_data.push(c, a, 0, 0);
+			}
+			else
+			{
+				triangle_data.push(a, b, 0, 0);
+			}
 		},
 	);
 }
