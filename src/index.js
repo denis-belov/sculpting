@@ -354,6 +354,7 @@ const program =
 			uniform int u_mode;
 			uniform vec3 u_distance;
 			uniform float u_radius;
+			uniform float u_strength;
 			uniform int u_shading_mode;
 			uniform int u_mouse_moved;
 			uniform float u_inverted;
@@ -397,7 +398,7 @@ const program =
 							if (distance(v_position, u_distance) < u_radius)
 							{
 								gl_FragColor.rgb -=
-									u_inverted * v_light_direction * (cos((distance(v_position, u_distance) / u_radius) * 3.14) + 1.0) * 0.05;
+									u_inverted * v_light_direction * (cos((distance(v_position, u_distance) / u_radius) * 3.14) + 1.0) * u_strength;
 							}
 						}
 					}
@@ -475,6 +476,7 @@ const u_vertices = program.getUniformLocation('u_vertices');
 const u_triangles = program.getUniformLocation('u_triangles');
 const u_shading_mode = program.getUniformLocation('u_shading_mode');
 const u_radius = program.getUniformLocation('u_radius');
+const u_strength = program.getUniformLocation('u_strength');
 const u_mouse_moved = program.getUniformLocation('u_mouse_moved');
 const u_inverted = program.getUniformLocation('u_inverted');
 
@@ -482,6 +484,7 @@ gl.useProgram(program.handle);
 
 gl.uniform1i(u_shading_mode, 1);
 gl.uniform1f(u_radius, 3);
+gl.uniform1f(u_strength, 0.05);
 gl.uniform1f(u_inverted, -1);
 gl.uniform1i(u_vertices, 0);
 gl.uniform1i(u_triangles, 1);
@@ -683,6 +686,7 @@ const gui_options =
 {
 	'shading mode': 1,
 	radius: 3,
+	strength: 0.05,
 	inverted: false,
 };
 
@@ -705,6 +709,18 @@ gui
 		(evt) =>
 		{
 			gl.uniform1f(u_radius, evt);
+
+			glkit.$();
+		},
+	);
+
+gui
+	.add(gui_options, 'strength', 0.01, 0.1)
+	.onChange
+	(
+		(evt) =>
+		{
+			gl.uniform1f(u_strength, evt);
 
 			glkit.$();
 		},
