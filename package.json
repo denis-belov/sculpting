@@ -51,7 +51,7 @@
 		"dat.gui": "0.7.7"
 	},
 	"scripts": {
-		"start": "webpack-dev-server --env=development",
+		"start": "webpack-dev-server --env=development --open",
 		"build": "webpack --env=development",
 		"prod": "webpack --env=production"
 	}
