@@ -1,4 +1,14 @@
 /*
+To do for optimization:
+
+1. Use uniform variable or template string variable instead of constant value of max triangles length for each vertex.
+2. Use data texture as storage of vertex normals. This will allow to update only normals that are being affected by "brush" area.
+   But this will add extra draw call and 2 extra textures and framebuffers.
+*/
+
+
+
+/*
 eslint-disable
 
 no-bitwise,
