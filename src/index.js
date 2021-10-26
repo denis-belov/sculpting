@@ -578,8 +578,8 @@ const snap = () =>
 	gl.uniform1i(u_raycast_mode, 0);
 };
 
-let clientX = 0;
-let clientY = 0;
+let mouse_x = 0;
+let mouse_y = 0;
 
 glkit.canvas.addEventListener
 (
@@ -589,7 +589,8 @@ glkit.canvas.addEventListener
 	{
 		if (evt.ctrlKey)
 		{
-			({ clientX, clientY } = evt);
+			mouse_x = ((evt.clientX / window.innerWidth) - 0.5) * 2;
+			mouse_y = -((evt.clientY / window.innerHeight) - 0.5) * 2;
 
 			mouse_moved = 2;
 		}
@@ -602,7 +603,8 @@ glkit.canvas.addEventListener
 
 	(evt) =>
 	{
-		({ clientX, clientY } = evt);
+		mouse_x = ((evt.clientX / window.innerWidth) - 0.5) * 2;
+		mouse_y = -((evt.clientY / window.innerHeight) - 0.5) * 2;
 
 		mouse_moved = 2;
 	},
@@ -621,9 +623,6 @@ glkit_time.loop6
 			gl.uniform1i(u_mouse_moved, mouse_moved);
 
 
-
-			const mouse_x = ((clientX / window.innerWidth) - 0.5) * 2;
-			const mouse_y = -((clientY / window.innerHeight) - 0.5) * 2;
 
 			point.extractTranslation(orbit.obj.matrix);
 
