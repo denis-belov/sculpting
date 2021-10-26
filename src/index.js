@@ -299,6 +299,7 @@ const program =
 						// has a normal approximated to normals of other
 						// triangles. So normal calculated on just single
 						// triangle will give good result.
+
 						for (int ii = 0; ii < 2048; ++ii)
 						{
 							if (ii >= length)
