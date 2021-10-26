@@ -498,21 +498,6 @@ gl.uniform1f(u_inverted, -1);
 gl.uniform1i(u_vertices, 0);
 gl.uniform1i(u_triangles, 1);
 
-// window.__change = (options = {}) =>
-// {
-// 	if (options.radius)
-// 	{
-// 		gl.uniform1f(u_radius, options.radius);
-// 	}
-
-// 	if (options.shading_mode !== undefined)
-// 	{
-// 		gl.uniform1i(u_shading_mode, options.shading_mode);
-// 	}
-
-// 	glkit.$();
-// };
-
 gl.uniformMatrix4fv
 (
 	u_raycast_projection_matrix,
