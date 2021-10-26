@@ -399,7 +399,7 @@ const program =
 							if (distance(v_position, u_distance) < u_radius)
 							{
 								gl_FragColor.rgb -=
-									u_inverted * v_light_direction * (cos((distance(v_position, u_distance) / u_radius) * 3.14) + 1.0) * u_strength;
+									u_inverted * v_light_direction * (cos((distance(v_position, u_distance) / u_radius) * ${ Math.PI }) + 1.0) * u_strength;
 							}
 						}
 					}
