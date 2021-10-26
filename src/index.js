@@ -32,7 +32,7 @@ document.body.innerHTML = '<canvas></canvas>';
 
 
 // const geometry = new THREE.BoxGeometry(10, 10, 10, 10, 10, 10);
-const geometry = new THREE.BoxGeometry(10, 10, 10, 200, 200, 200);
+const geometry = new THREE.BoxGeometry(10, 10, 10, 300, 300, 300);
 // const geometry = new THREE.TorusKnotGeometry(10, 3, 300, 100);
 LOG(geometry)
 
