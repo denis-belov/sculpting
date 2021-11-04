@@ -353,7 +353,7 @@ const program =
 			${ glkit.Shader.maxPrecision.fs.float }
 
 			uniform int u_mode;
-			uniform vec3 u_distance;
+			uniform vec3 u_intersection;
 			uniform float u_radius;
 			uniform float u_strength;
 			uniform int u_shading_mode;
@@ -396,10 +396,12 @@ const program =
 
 						if (u_mouse_moved == 2)
 						{
-							if (distance(v_position, u_distance) < u_radius)
+							float distance = distance(v_position, u_intersection);
+
+							if (distance < u_radius)
 							{
 								gl_FragColor.rgb -=
-									u_inverted * v_light_direction * (cos((distance(v_position, u_distance) / u_radius) * ${ Math.PI }) + 1.0) * u_strength;
+									u_inverted * v_light_direction * (cos((distance / u_radius) * ${ Math.PI }) + 1.0) * u_strength;
 							}
 						}
 					}
@@ -479,7 +481,7 @@ const direction = new glkit.Vec3();
 const u_raycast_mode = program.getUniformLocation('u_raycast_mode');
 const u_raycast_projection_matrix = program.getUniformLocation('u_raycast_projection_matrix');
 const u_raycast_view_matrix = program.getUniformLocation('u_raycast_view_matrix');
-const u_distance = program.getUniformLocation('u_distance');
+const u_intersection = program.getUniformLocation('u_intersection');
 const u_mode = program.getUniformLocation('u_mode');
 const u_vertices = program.getUniformLocation('u_vertices');
 const u_triangles = program.getUniformLocation('u_triangles');
@@ -630,7 +632,7 @@ glkit_time.loop6
 
 			raycaster.snap(snap);
 
-			gl.uniform3fv(u_distance, direction.mulS(raycaster.pixel[0]).add(point).arr);
+			gl.uniform3fv(u_intersection, direction.mulS(raycaster.pixel[0]).add(point).arr);
 
 
 
